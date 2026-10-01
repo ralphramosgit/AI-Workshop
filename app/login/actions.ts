@@ -24,7 +24,7 @@ export async function signUp(formData: FormData) {
   const origin = (await headers()).get("origin");
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: { emailRedirectTo: `${origin}/auth/confirm` },
@@ -34,6 +34,12 @@ export async function signUp(formData: FormData) {
     redirect("/signup?error=" + encodeURIComponent(error.message));
   }
 
+  // Email confirmation is off, so Supabase signs the new user in right away.
+  if (data.session) {
+    redirect("/tasks");
+  }
+
+  // If confirmation is ever turned back on, there is no session yet.
   redirect(
     "/signup?message=" +
       encodeURIComponent("Check your email for a confirmation link.")
