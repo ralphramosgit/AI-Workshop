@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   const year = new Date().getFullYear();
 
@@ -7,6 +9,9 @@ export default function Home() {
         <section className="hero">
           <h1>Ralph AI Workshop</h1>
           <p className="tagline">a senior at UH Manoa studying linguistics</p>
+          <p className="auth-links">
+            <Link href="/signup">Sign up</Link> · <Link href="/login">Log in</Link>
+          </p>
         </section>
 
         <section className="section">

@@ -87,6 +87,50 @@ a:hover {
   border-top: 1px solid #e2e2e2;
 }
 
+.auth-links {
+  margin: 1rem 0 0;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 320px;
+  margin-bottom: 1.5rem;
+}
+
+.auth-form input {
+  padding: 0.5rem;
+  font: inherit;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  font: inherit;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.auth-form button {
+  margin-top: 0.5rem;
+}
+
+.form-error {
+  color: #b00020;
+  margin: 0;
+}
+
+.form-message {
+  padding: 0.75rem;
+  background: var(--muted);
+  border-radius: 4px;
+}
+
 @media (max-width: 480px) {
   .hero h1 {
     font-size: 1.75rem;
