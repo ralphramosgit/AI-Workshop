@@ -147,7 +147,7 @@ button {
   border-radius: 4px;
 }
 
-.task-form input {
+.task-form input[type="text"] {
   flex: 1 1 200px;
 }
 
@@ -159,6 +159,7 @@ button {
 
 .task {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem;
   padding: 0.6rem 0;
@@ -175,8 +176,54 @@ button {
   cursor: pointer;
 }
 
-.task-title {
-  flex: 1;
+.task-body {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.due-date {
+  color: #555;
+}
+
+.task.overdue .task-title,
+.task.overdue .due-date {
+  color: #b00020;
+}
+
+.overdue-label {
+  padding: 0.1rem 0.5rem;
+  color: #fff;
+  background: #b00020;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.due-form {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.due-form input {
+  padding: 0.3rem;
+  font: inherit;
+  font-size: 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.due-form button {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.85rem;
 }
 
 .task.done .task-title {
@@ -185,7 +232,6 @@ button {
 }
 
 .skill-label {
-  font-size: 0.85rem;
   padding: 0.1rem 0.5rem;
   color: var(--accent);
   background: var(--muted);
