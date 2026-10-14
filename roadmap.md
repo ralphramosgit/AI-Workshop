@@ -9,12 +9,12 @@ A stranger opens the live site and creates an account with an email and password
 ## Slices
 1. Sign up and log in | done-criteria: (a) On the live site, click Sign up, enter a new email and password, submit; you land on /tasks reading "Signed in as" followed by that email. (b) Click Log out; the Log in form appears and the email is gone. (c) Log in with that email and a wrong password; an error message appears and you stay on the Log in page. (d) While logged out, type /tasks into the address bar; you are sent to the Log in page. | status: DONE
 2. Tasks with skill tags | done-criteria: (a) On /tasks, type "Read one news article", choose Reading from the skill menu, click Add; the task appears with a "Reading" label. (b) Tick its checkbox and reload; it is still ticked. (c) Log out and back in; the task and its tick are still there. (d) Sign up a second account in a private window; its /tasks list is empty and does not show the first account's task. | status: ACTIVE
-3. Skills page | done-criteria: (a) On /tasks, click the Skills tab; /skills lists all six skills, each with a count of tasks completed in the last 7 days. (b) Complete two Reading tasks and no Speaking tasks, reload /skills; Reading shows 2 and is not marked "Avoiding", Speaking shows 0 and is marked "Avoiding". (c) While logged out, visit /skills; you are sent to the Log in page. | status: pending
+3. Due dates | done-criteria: (a) Add a task due yesterday; it shows in red with the word "Overdue" next to it. (b) Add a task due tomorrow; it shows tomorrow's date in normal formatting, with no red and no "Overdue". (c) A task with no due date still shows and is not marked overdue. (d) Change an overdue task's due date to a future date and save; the red and the "Overdue" label disappear straight away. "Overdue" means due before today's date on your own device; a task due today is not overdue. | status: pending
+4. Skills page | done-criteria: (a) On /tasks, click the Skills tab; /skills lists all six skills, each with a count of tasks completed in the last 7 days. (b) Complete two Reading tasks and no Speaking tasks, reload /skills; Reading shows 2 and is not marked "Avoiding", Speaking shows 0 and is marked "Avoiding". (c) While logged out, visit /skills; you are sent to the Log in page. | status: pending
 
 ## Backlog
 - Editing task text
 - Deleting tasks
-- Due dates
 - Custom skills beyond the six
 - Tracking more than one language
 - Password reset
