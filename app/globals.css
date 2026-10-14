@@ -131,6 +131,72 @@ button {
   border-radius: 4px;
 }
 
+.task-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.task-form input,
+.task-form select {
+  padding: 0.5rem;
+  font: inherit;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.task-form input {
+  flex: 1 1 200px;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 1.5rem;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.task form {
+  display: flex;
+}
+
+.task input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  cursor: pointer;
+}
+
+.task-title {
+  flex: 1;
+}
+
+.task.done .task-title {
+  color: #777;
+  text-decoration: line-through;
+}
+
+.skill-label {
+  font-size: 0.85rem;
+  padding: 0.1rem 0.5rem;
+  color: var(--accent);
+  background: var(--muted);
+  border-radius: 999px;
+}
+
+.empty {
+  color: #666;
+  margin: 1rem 0 1.5rem;
+}
+
 @media (max-width: 480px) {
   .hero h1 {
     font-size: 1.75rem;
