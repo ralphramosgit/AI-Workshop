@@ -3,14 +3,7 @@ import { createClient } from "@/app/lib/supabase/server";
 import { logOut } from "../login/actions";
 import { addTask } from "./actions";
 import { SKILLS } from "./skills";
-import TaskCheckbox from "./TaskCheckbox";
-
-type Task = {
-  id: string;
-  title: string;
-  skill: string;
-  done: boolean;
-};
+import TaskRow, { type Task } from "./TaskRow";
 
 export default async function TasksPage({
   searchParams,
@@ -28,7 +21,7 @@ export default async function TasksPage({
   // Row level security means this only returns the signed-in user's tasks.
   const { data: tasks } = await supabase
     .from("tasks")
-    .select("id, title, skill, done")
+    .select("id, title, skill, done, due_date")
     .order("created_at", { ascending: true })
     .returns<Task[]>();
 
@@ -51,6 +44,8 @@ export default async function TasksPage({
             </option>
           ))}
         </select>
+        <label htmlFor="due_date">Due date (optional)</label>
+        <input id="due_date" name="due_date" type="date" />
         <button type="submit">Add</button>
       </form>
       {error && <p className="form-error">{error}</p>}
@@ -58,11 +53,7 @@ export default async function TasksPage({
       {tasks && tasks.length > 0 ? (
         <ul className="task-list">
           {tasks.map((task) => (
-            <li key={task.id} className={task.done ? "task done" : "task"}>
-              <TaskCheckbox id={task.id} done={task.done} title={task.title} />
-              <span className="task-title">{task.title}</span>
-              <span className="skill-label">{task.skill}</span>
-            </li>
+            <TaskRow key={task.id} task={task} />
           ))}
         </ul>
       ) : (
