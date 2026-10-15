@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
+import { CheckCheck, ListTodo, LogOut, Plus } from "lucide-react";
 import { createClient } from "@/app/lib/supabase/server";
 import { logOut } from "../login/actions";
 import { addTask } from "./actions";
-import { SKILLS } from "./skills";
-import TaskRow, { type Task } from "./TaskRow";
+import TaskCard, { type Task } from "./TaskCard";
+import TaskFields from "./TaskFields";
 
 export default async function TasksPage({
   searchParams,
@@ -19,50 +20,74 @@ export default async function TasksPage({
   if (!user) redirect("/login");
 
   // Row level security means this only returns the signed-in user's tasks.
-  const { data: tasks } = await supabase
+  const { data } = await supabase
     .from("tasks")
-    .select("id, title, skill, done, due_date")
+    .select("id, title, skill, class_name, done, due_date")
     .order("created_at", { ascending: true })
     .returns<Task[]>();
 
+  const tasks = data ?? [];
+  const open = tasks.filter((t) => !t.done);
+  const completed = tasks.filter((t) => t.done);
+
   return (
-    <main>
-      <h1>Tasks</h1>
-      <p>Signed in as {user.email}</p>
+    <main className="tasks-page">
+      <header className="page-header">
+        <div>
+          <h1>Tasks</h1>
+          <p className="muted">Signed in as {user.email}</p>
+        </div>
+        <form action={logOut}>
+          <button type="submit" className="button-secondary">
+            <LogOut size={16} aria-hidden /> Log out
+          </button>
+        </form>
+      </header>
 
-      <form className="task-form" action={addTask}>
-        <label htmlFor="title">New task</label>
-        <input id="title" name="title" type="text" maxLength={200} required />
-        <label htmlFor="skill">Skill</label>
-        <select id="skill" name="skill" required defaultValue="">
-          <option value="" disabled>
-            Choose a skill
-          </option>
-          {SKILLS.map((skill) => (
-            <option key={skill} value={skill}>
-              {skill}
-            </option>
-          ))}
-        </select>
-        <label htmlFor="due_date">Due date (optional)</label>
-        <input id="due_date" name="due_date" type="date" />
-        <button type="submit">Add</button>
-      </form>
-      {error && <p className="form-error">{error}</p>}
+      <section className="card add-card">
+        <h2>Add a task</h2>
+        <form action={addTask}>
+          <TaskFields idPrefix="new" />
+          <div className="card-actions">
+            <button type="submit">
+              <Plus size={16} aria-hidden /> Add task
+            </button>
+          </div>
+        </form>
+        {error && <p className="form-error">{error}</p>}
+      </section>
 
-      {tasks && tasks.length > 0 ? (
-        <ul className="task-list">
-          {tasks.map((task) => (
-            <TaskRow key={task.id} task={task} />
-          ))}
-        </ul>
-      ) : (
-        <p className="empty">No tasks yet. Add one above.</p>
-      )}
+      <section>
+        <h2 className="section-title">
+          <ListTodo size={20} aria-hidden /> To do
+          <span className="count">{open.length}</span>
+        </h2>
+        {open.length > 0 ? (
+          <ul className="card-list">
+            {open.map((task) => (
+              <TaskCard key={task.id} task={task} />
+            ))}
+          </ul>
+        ) : (
+          <p className="empty">Nothing to do. Add a task above.</p>
+        )}
+      </section>
 
-      <form action={logOut}>
-        <button type="submit">Log out</button>
-      </form>
+      <section>
+        <h2 className="section-title">
+          <CheckCheck size={20} aria-hidden /> Completed
+          <span className="count">{completed.length}</span>
+        </h2>
+        {completed.length > 0 ? (
+          <ul className="card-list">
+            {completed.map((task) => (
+              <TaskCard key={task.id} task={task} />
+            ))}
+          </ul>
+        ) : (
+          <p className="empty">Tick a task to move it here.</p>
+        )}
+      </section>
     </main>
   );
 }
