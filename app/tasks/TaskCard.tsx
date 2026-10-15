@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useOptimistic, useState } from "react";
 import {
   Calendar,
   Check,
@@ -44,6 +44,11 @@ function formatDueDate(dueDate: string) {
 
 export default function TaskCard({ task }: { task: Task }) {
   const [editing, setEditing] = useState(false);
+
+  // Shows the tick straight away while the server saves it, so the card can
+  // animate out of its section instead of waiting on the network.
+  const [shownDone, setShownDone] = useOptimistic(task.done);
+  const moving = shownDone !== task.done;
 
   // The server can't know your device's date, so "today" is filled in once the
   // page is in your browser. Until then, nothing is marked overdue.
@@ -90,10 +95,16 @@ export default function TaskCard({ task }: { task: Task }) {
   const classes = ["task-card"];
   if (task.done) classes.push("done");
   if (overdue) classes.push("overdue");
+  if (moving) classes.push("moving");
 
   return (
     <li className={classes.join(" ")}>
-      <form action={setTaskDone}>
+      <form
+        action={async (formData) => {
+          setShownDone(!task.done);
+          await setTaskDone(formData);
+        }}
+      >
         <input type="hidden" name="id" value={task.id} />
         {/* Clicking sends the opposite of the current state. */}
         <input type="hidden" name="done" value={task.done ? "" : "on"} />
@@ -106,7 +117,11 @@ export default function TaskCard({ task }: { task: Task }) {
               : `Mark "${task.title}" done`
           }
         >
-          {task.done ? <CircleCheck size={22} /> : <Circle size={22} />}
+          {shownDone ? (
+            <CircleCheck size={22} className="pop" />
+          ) : (
+            <Circle size={22} />
+          )}
         </button>
       </form>
 
